@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseContext">
+    <EntitySetMapping Name="Answers">
+      <EntityTypeMapping TypeName="DatabaseModel.Answer">
+        <MappingFragment StoreEntitySet="Answers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="answer1" ColumnName="answer" />
+          <ScalarProperty Name="ques_id" ColumnName="ques_id" />
+          <ScalarProperty Name="uploader" ColumnName="uploader" />
+          <ScalarProperty Name="upload_date" ColumnName="upload_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Districts">
+      <EntityTypeMapping TypeName="DatabaseModel.District">
+        <MappingFragment StoreEntitySet="Districts">
+          <ScalarProperty Name="division" ColumnName="division" />
+          <ScalarProperty Name="district1" ColumnName="district" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Questions">
+      <EntityTypeMapping TypeName="DatabaseModel.Question">
+        <MappingFragment StoreEntitySet="Questions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="uploader" ColumnName="uploader" />
+          <ScalarProperty Name="upload_date" ColumnName="upload_date" />
+          <ScalarProperty Name="division" ColumnName="division" />
+          <ScalarProperty Name="district" ColumnName="district" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="DatabaseModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Votes">
+      <EntityTypeMapping TypeName="DatabaseModel.Vote">
+        <MappingFragment StoreEntitySet="Votes">
+          <ScalarProperty Name="ques_id" ColumnName="ques_id" />
+          <ScalarProperty Name="ans_id" ColumnName="ans_id" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="up_down" ColumnName="up_down" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

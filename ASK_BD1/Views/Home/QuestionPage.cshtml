@@ -1,0 +1,59 @@
+﻿@model ASK_BD1.Models.Question
+@using System.Diagnostics.Tracing
+@using ASK_BD1.Models
+
+@{
+    ViewBag.Title = "QuestionPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string userEmail = Session["user_email"]?.ToString();
+}
+
+<div class="container">
+    <div class="row">
+        @Html.Partial("question", Model)
+    </div>
+
+    @if (userEmail != null)
+    {
+        <button data-toggle="collapse" class="btn btn-primary btn-sm" data-target="#answer-input">
+            <div class="answer-button float-left rounded p-1">
+                <span class="float-left">
+                    <svg width="24px" height="24px">
+                        <g transform="translate(2.500000, 3.500000)" stroke="none" fill="none" fill-rule="evenodd">
+                            <g transform="translate(9.000000, 9.000000) rotate(-315.000000) translate(-9.000000, -9.000000) translate(7.000000, -1.000000)">
+                                <path d="M2,8.8817842e-16 L2,8.8817842e-16 L2,8.8817842e-16 C3.1045695,6.85269983e-16 4,0.8954305 4,2 L4,16 L2.00256278,20 L0,16 L0,2 L0,2 C-1.35267774e-16,0.8954305 0.8954305,1.09108686e-15 2,8.8817842e-16 Z" stroke="#666" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <polygon fill="#666" transform="translate(2.000000, 18.750000) scale(1, -1) translate(-2.000000, -18.750000) " points="2 17.5 3.25 20 0.75 20"></polygon>
+                            </g>
+                            <path d="M12,16 L17,16 L17,11 M7,1 L2,1 L2,6" stroke="#666" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </svg>
+                </span>
+                <span class="ml-2">
+                    Answer
+                </span>
+            </div>
+        </button>
+        <form action="/Home/AnswerQuestion" method="post" class="input-group collapse mt-4" id="answer-input">
+            <input type="hidden" value="@Model.Id" name="questionId" />
+            <input class="form-control" type="text" name="input_answer" placeholder="Answer" />
+            <div class="input-group-append">
+                <input type="submit" class="btn btn-primary form-control" name="questionId" value="submit" />
+            </div>
+
+        </form>
+    }
+    else
+    {
+        <text>You need to sign in to answer the question</text>
+    }
+
+    <h3 class="mb-5">Total @Model.Answers.Count Answers</h3>
+    @{
+        int count = 0;
+    }
+    @foreach (var answer in Model.Answers)
+    {
+        ViewBag.answer_count = ++count;
+        @Html.Partial("answer", answer)
+    }
+</div>

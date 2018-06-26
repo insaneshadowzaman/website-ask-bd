@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Answer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="answer1" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ques_id" Type="Int32" Nullable="false" />
+    <Property Name="uploader" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="upload_date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Question" Relationship="Self.FK__Answers__ques_id__2C3393D0" FromRole="Answers" ToRole="Questions" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Answers__uploade__2D27B809" FromRole="Answers" ToRole="Users" />
+    <NavigationProperty Name="Votes" Relationship="Self.FK__Votes__ans_id__35BCFE0A" FromRole="Answers" ToRole="Votes" />
+  </EntityType>
+  <EntityType Name="District">
+    <Key>
+      <PropertyRef Name="division" />
+      <PropertyRef Name="district1" />
+    </Key>
+    <Property Name="division" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="district1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Questions" Relationship="Self.FK__Questions__29572725" FromRole="Districts" ToRole="Questions" />
+  </EntityType>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="uploader" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="upload_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="division" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="district" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Answers" Relationship="Self.FK__Answers__ques_id__2C3393D0" FromRole="Questions" ToRole="Answers" />
+    <NavigationProperty Name="District1" Relationship="Self.FK__Questions__29572725" FromRole="Questions" ToRole="Districts" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Questions__uploa__286302EC" FromRole="Questions" ToRole="Users" />
+    <NavigationProperty Name="Votes" Relationship="Self.FK__Votes__ques_id__36B12243" FromRole="Questions" ToRole="Votes" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Answers" Relationship="Self.FK__Answers__uploade__2D27B809" FromRole="Users" ToRole="Answers" />
+    <NavigationProperty Name="Questions" Relationship="Self.FK__Questions__uploa__286302EC" FromRole="Users" ToRole="Questions" />
+    <NavigationProperty Name="Votes" Relationship="Self.FK__Votes__email__30F848ED" FromRole="Users" ToRole="Votes" />
+  </EntityType>
+  <EntityType Name="Vote">
+    <Key>
+      <PropertyRef Name="ques_id" />
+      <PropertyRef Name="ans_id" />
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="ques_id" Type="Int32" Nullable="false" />
+    <Property Name="ans_id" Type="Int32" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="up_down" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Answer" Relationship="Self.FK__Votes__ans_id__35BCFE0A" FromRole="Votes" ToRole="Answers" />
+    <NavigationProperty Name="Question" Relationship="Self.FK__Votes__ques_id__36B12243" FromRole="Votes" ToRole="Questions" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Votes__email__30F848ED" FromRole="Votes" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK__Answers__ques_id__2C3393D0">
+    <End Role="Questions" Type="Self.Question" Multiplicity="1" />
+    <End Role="Answers" Type="Self.Answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Answers">
+        <PropertyRef Name="ques_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Answers__uploade__2D27B809">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Answers" Type="Self.Answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Answers">
+        <PropertyRef Name="uploader" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Votes__ans_id__35BCFE0A">
+    <End Role="Answers" Type="Self.Answer" Multiplicity="1" />
+    <End Role="Votes" Type="Self.Vote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Answers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Votes">
+        <PropertyRef Name="ans_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Questions__29572725">
+    <End Role="Districts" Type="Self.District" Multiplicity="0..1" />
+    <End Role="Questions" Type="Self.Question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Districts">
+        <PropertyRef Name="division" />
+        <PropertyRef Name="district1" />
+      </Principal>
+      <Dependent Role="Questions">
+        <PropertyRef Name="division" />
+        <PropertyRef Name="district" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Questions__uploa__286302EC">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Questions" Type="Self.Question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Questions">
+        <PropertyRef Name="uploader" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Votes__ques_id__36B12243">
+    <End Role="Questions" Type="Self.Question" Multiplicity="1" />
+    <End Role="Votes" Type="Self.Vote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Votes">
+        <PropertyRef Name="ques_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Votes__email__30F848ED">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Votes" Type="Self.Vote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Votes">
+        <PropertyRef Name="email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DatabaseContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Answers" EntityType="Self.Answer" />
+    <EntitySet Name="Districts" EntityType="Self.District" />
+    <EntitySet Name="Questions" EntityType="Self.Question" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="Votes" EntityType="Self.Vote" />
+    <AssociationSet Name="FK__Answers__ques_id__2C3393D0" Association="Self.FK__Answers__ques_id__2C3393D0">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="Answers" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Answers__uploade__2D27B809" Association="Self.FK__Answers__uploade__2D27B809">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Answers" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Votes__ans_id__35BCFE0A" Association="Self.FK__Votes__ans_id__35BCFE0A">
+      <End Role="Answers" EntitySet="Answers" />
+      <End Role="Votes" EntitySet="Votes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Questions__29572725" Association="Self.FK__Questions__29572725">
+      <End Role="Districts" EntitySet="Districts" />
+      <End Role="Questions" EntitySet="Questions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Questions__uploa__286302EC" Association="Self.FK__Questions__uploa__286302EC">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Questions" EntitySet="Questions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Votes__ques_id__36B12243" Association="Self.FK__Votes__ques_id__36B12243">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="Votes" EntitySet="Votes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Votes__email__30F848ED" Association="Self.FK__Votes__email__30F848ED">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Votes" EntitySet="Votes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

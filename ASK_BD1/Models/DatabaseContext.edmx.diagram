@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5de8a8ed2fe14bc7969af34dafafdd10" Name="Diagram1">
+        <EntityTypeShape EntityType="DatabaseModel.Answer" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.District" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Question" Width="1.5" PointX="6" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.User" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Vote" Width="1.5" PointX="8.25" PointY="3.375" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseModel.FK__Answers__ques_id__2C3393D0" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__Answers__uploade__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__Votes__ans_id__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__Questions__29572725" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__Questions__uploa__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__Votes__ques_id__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__Votes__email__30F848ED" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

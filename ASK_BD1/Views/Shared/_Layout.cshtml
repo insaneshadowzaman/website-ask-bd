@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ASK BD</title>
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" type="text/css" href="../../Styles/question-style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../Styles/answer-style.css"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body style="padding-top: 55px">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        @Html.ActionLink("ASK BD", "Index", null, new { @class = "navbar-brand" });
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    @Html.ActionLink("About", "About", "Home", null, new
+                    {
+                        @class = "nav-link" + (ViewContext.RouteData.Values["Action"].ToString() == "About" ? " active" : "")
+                    })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Home", "Index", "Home", null, new
+                    {
+                        @class = "nav-link" + (ViewContext.RouteData.Values["Action"].ToString() == "Index" || ViewContext.RouteData.Values["Action"].ToString() == "SignedIn" ? " active" : "")
+                    })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Latest Questions", "Questions", "Home", null, new
+                    {
+                        @class = "nav-link" + (ViewContext.RouteData.Values["Action"].ToString() == "Questions" ? " active" : "")
+                    })
+                </li>
+                <li class="nav-item">
+                    @if (Session["user_email"] != null)
+                    {
+                        @ViewBag.username
+                        @Html.ActionLink(" : Logout", "Logout", "Home", null, new { @class = "nav-link" })
+                    }
+                    else
+                    {
+                        <button class="btn btn-link" style="color: grey" type="button" data-toggle="modal" data-target="#signinmodal">Sign in</button>
+                        <span> or </span>
+                        <button class="btn btn-link" style="color: grey" type="button" data-toggle="modal" data-target="#signupmodal">Sign up</button>
+                    }
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    @if (Session["user_email"] == null)
+    {
+        <div class="modal fade" role="dialog" id="signinmodal">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sign in</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @using (Html.BeginForm("SignedIn", "Home", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <input type="email" name="input_email" placeholder="Your Email" class="form-control mb-3" required="required"/>
+                            <input type="password" name="input_pass" placeholder="Your Password" class="form-control mb-3" required="required" />
+                            <label for="input_remember">
+                                <input id="input_remember" type="checkbox" value="off" name="input_remember" class="ml-3 form-check-inline" />
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" value="Login" class="btn btn-primary" />
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="signupmodal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sign up</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @using (Html.BeginForm("SignedUp", "Home", FormMethod.Post, new { @class = "form-group"}))
+                    {
+                        <div class="modal-body">
+                            <div class="row pb-3">
+                                <div class="col">
+                                    <input type="text" name="input_fname" class="form-control" placeholder="First Name" required="required" />
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="input_lname" class="form-control" placeholder="Last Name"  required="required"/>
+                                </div>
+                            </div>
+
+                            <div class="row pb-3">
+                                <div class="col">
+                                    <input type="email" name="input_email" class="form-control" style="max-width: none" placeholder="Email Address"  required="required"/>
+                                </div>
+                            </div>
+
+                            <div class="row pb-3">
+                                <div class="col">
+                                    <input type="password" name="input_pass" class="form-control" placeholder="Password"  required="required"/>
+                                </div>
+                                <div class="col">
+                                    <input type="password" name="input_repass" class="form-control" placeholder="Confirm Password"  required="required"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="input_remember">
+                                    <input id="input_remember" type="checkbox" value="off" name="input_remember" class="ml-3 form-check-inline"/>
+                                    Remember me
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" value="SignUp" class="btn btn-primary" title="Sign Up" />
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="layout-body">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div style="background-color: #212529">
+            <div class="container">
+                <div class="row py-4 d-flex align-items-center">
+                    <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
+                        <h5 class="mb-0" style="color: white">Get connected with us on social networks!</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid text-center text-md-left pt-5" style="background-color: silver">
+            <div class="row mt-3">
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <h6 class="text-uppercase font-weight-bold">Company name</h6>
+                    <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>Ask BD</p>
+                    <p>It's an online site for asking questions and getting answers through posts.</p>
+                </div>
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <h6 class="text-uppercase font-weight-bold">Districts</h6>
+                    <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>
+                        <a href="~/Home/Questions?division=Dhaka">
+                            Dhaka
+                        </a>
+                    </p>
+                    <p>
+                        <a href="~/Home/Questions?division=Khulna">
+                            Khulna
+                        </a>
+                    </p>
+                    <p>
+                        <a href="~/Home/Questions?division=Chittagong">
+                            Chittagong
+                        </a>
+                    </p>
+                    <p>
+                        <a href="~/Home/Questions?division=Sylhet">
+                            Sylhet
+                        </a>
+                    </p>
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <h6 class="text-uppercase font-weight-bold">Useful links</h6>
+                    <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>
+                        <a href="#">Your Account</a>
+                    </p>
+                    <p>
+                        <a href="#">Become an Affiliate</a>
+                    </p>
+                    <p>
+                        <a href="#">Shipping Rates</a>
+                    </p>
+                    <p>
+                        <a href="#">Help</a>
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <h6 class="text-uppercase font-weight-bold">Contact</h6>
+                    <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>
+                        <i class="mr-3"></i>CSE Building, KUET, Khulna, Bangladesh
+                    </p>
+                    <p>
+                        <i class="mr-3"></i>askbd@gmail.com
+                    </p>
+                    <p>
+                        <i class="mr-3"></i>+8801798015623
+                    </p>
+                    <p>
+                        <i class="mr-3"></i>+8801571795269
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="text-center py-3" style="background-color: black; color: white">
+            © 2018 Copyright:
+            <a href="http://www.facebook.com/1nsaneshadow" target="_blank">Md. Rahat-Uz-Zaman</a>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+<script type="text/javascript" src="/Scripts/Custom/ajaxFunctions.js"></script>
+</body>
+</html>

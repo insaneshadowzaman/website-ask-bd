@@ -1,0 +1,98 @@
+﻿@using ASK_BD1.Models
+@model ASK_BD1.Models.Answer
+
+@{
+    string userEmail = Session["user_email"]?.ToString();
+
+    int currentAnswerVote = 4;
+    if (userEmail != null)
+    {
+        Vote answerVote = Model.Votes.FirstOrDefault(v => v.email == userEmail);
+        if (answerVote != null)
+        {
+            currentAnswerVote = answerVote.up_down;
+        }
+    }
+}
+
+<div class="row mb-4" id="answer_no_@Model.Id.ToString()">
+    <div class="col-1"></div>
+    <div class="col-2">
+        <div class="question_likes_dislikes_div">
+            <div class="answer_count_div">
+                <p>
+                    @{
+                        var count = ViewBag.answer_count;
+                    }
+                    @if (count != null)
+                    {
+                        @count
+                    }
+                    else
+                    {
+                        <text>0</text>
+                    }
+                </p>
+            </div>
+
+            @{
+                int answerUpOrDown = 4;
+                if (userEmail != null)
+                {
+                    ASK_BD1.Models.Vote currentVote = Model.Votes.FirstOrDefault(v => v.email == userEmail);
+                    if (currentVote != null)
+                    {
+                        answerUpOrDown = currentVote.up_down;
+                    }
+                }
+            }
+
+            <div class="question_votes_outer_div">
+                <div class="question_votes_div">
+                    <p class="question_likes_count">
+                        @Model.Votes.Count(v => v.up_down == 1).ToString()
+                    </p>
+                    <p class="answer_likes_label">
+                        @if (userEmail != null)
+                        {
+                            <span onclick="ajaxLike(1, @Model.Id, @((int)Enums.VOTE_STATES.UP))" class="btn btn-link @((currentAnswerVote==(int)Enums.VOTE_STATES.UP)?"active":"")">Like</span>
+                        }
+                        else
+                        {
+                            <span class="btn btn-link" data-toggle="modal" data-target="#signinmodal">Like</span>
+                        }
+                    </p>
+                </div>
+
+                <div class="question_dislikes_count_div">
+
+                    <p class="question_dislikes_count">
+                        @Model.Votes.Count(v => v.up_down == 0).ToString()
+                    </p>
+                    <p class="answer_dislikes_label">
+                        @if (userEmail != null)
+                        {
+                            <span onclick="ajaxLike(1, @Model.Id, @((int)Enums.VOTE_STATES.DOWN))" class="btn btn-link @((currentAnswerVote==(int)Enums.VOTE_STATES.DOWN)?"active":"")">Dislike</span>
+                        }
+                        else
+                        {
+                            <span class="btn btn-link" data-toggle="modal" data-target="#signinmodal">Dislike</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <div style="min-height: 80px">
+            @Model.answer1
+        </div>
+        <ul class="questionmeta">
+            <li>
+                Answered By: @Model.User.name
+            </li>
+
+            <li>Asked on: @Model.upload_date.ToString("dd/mm/yyyy")</li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Answers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="answer" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="ques_id" Type="int" Nullable="false" />
+    <Property Name="uploader" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="upload_date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Districts">
+    <Key>
+      <PropertyRef Name="division" />
+      <PropertyRef Name="district" />
+    </Key>
+    <Property Name="division" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="district" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Questions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="300" />
+    <Property Name="uploader" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="upload_date" Type="datetime" Nullable="false" />
+    <Property Name="division" Type="varchar" MaxLength="50" />
+    <Property Name="district" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Votes">
+    <Key>
+      <PropertyRef Name="ques_id" />
+      <PropertyRef Name="ans_id" />
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="ques_id" Type="int" Nullable="false" />
+    <Property Name="ans_id" Type="int" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="up_down" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Answers__ques_id__2C3393D0">
+    <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+    <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Answers">
+        <PropertyRef Name="ques_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Answers__uploade__2D27B809">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Answers">
+        <PropertyRef Name="uploader" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Questions__29572725">
+    <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+    <End Role="Questions" Type="Self.Questions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Districts">
+        <PropertyRef Name="division" />
+        <PropertyRef Name="district" />
+      </Principal>
+      <Dependent Role="Questions">
+        <PropertyRef Name="division" />
+        <PropertyRef Name="district" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Questions__uploa__286302EC">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Questions" Type="Self.Questions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Questions">
+        <PropertyRef Name="uploader" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Votes__ans_id__35BCFE0A">
+    <End Role="Answers" Type="Self.Answers" Multiplicity="1" />
+    <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Answers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Votes">
+        <PropertyRef Name="ans_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Votes__email__30F848ED">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Votes">
+        <PropertyRef Name="email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Votes__ques_id__36B12243">
+    <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+    <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Votes">
+        <PropertyRef Name="ques_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DatabaseModelStoreContainer">
+    <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Votes" EntityType="Self.Votes" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Answers__ques_id__2C3393D0" Association="Self.FK__Answers__ques_id__2C3393D0">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="Answers" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Answers__uploade__2D27B809" Association="Self.FK__Answers__uploade__2D27B809">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Answers" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Questions__29572725" Association="Self.FK__Questions__29572725">
+      <End Role="Districts" EntitySet="Districts" />
+      <End Role="Questions" EntitySet="Questions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Questions__uploa__286302EC" Association="Self.FK__Questions__uploa__286302EC">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Questions" EntitySet="Questions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Votes__ans_id__35BCFE0A" Association="Self.FK__Votes__ans_id__35BCFE0A">
+      <End Role="Answers" EntitySet="Answers" />
+      <End Role="Votes" EntitySet="Votes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Votes__email__30F848ED" Association="Self.FK__Votes__email__30F848ED">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Votes" EntitySet="Votes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Votes__ques_id__36B12243" Association="Self.FK__Votes__ques_id__36B12243">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="Votes" EntitySet="Votes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,78 @@
+﻿@using ASK_BD1.Models
+@model Tuple<List<ASK_BD1.Models.Question>, List<ASK_BD1.Models.Answer>>
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" style="background-color: silver; padding-top: 80px; padding-bottom: 80px">
+    <div class="row">
+        <div class="container h-100">
+            <div class="row">
+                <h1 class="mx-auto">ADD YOUR QUESTION</h1>
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#add_item_modal">Add Item</button>
+                <div class="modal fade" tabindex="-1" role="dialog" id="add_item_modal">
+                    <div class="modal-dialog" role="document">
+                        <form class="form-row" action="AddQuestion" method="post">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Question</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input required="required" type="text" id="ques_name" placeholder="Title" class="form-control mb-3" name="input_question"/>
+                                    <textarea required="required" rows="5" id="ques_desc" placeholder="Description" class="form-control" name="input_description"></textarea>
+                                    <select name="input_division" onchange="ajaxDivisionSelect(this.value)">
+                                        <option selected="selected">None</option>
+                                        @{
+                                            var dbContext = new DatabaseContext();
+                                            var divisions = dbContext.Districts.Select(v => v.division).Distinct();
+                                        }
+                                        @foreach (var name in divisions)
+                                        {
+                                            <option>@name</option>
+                                        }
+                                    </select>
+                                    <select name="input_district" id="district_selector">
+                                        <option selected="selected">None</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-primary" name="submit" value="Submit" id="add_ques"/>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <h1>Your Questions</h1>
+    </div>
+    @if (Model.Item1.Count == 0)
+    {
+        <p style="color: red">You have not uploaded any question!!!</p>
+    }
+    @foreach (var question in Model.Item1)
+    {
+        @Html.Partial("question", question)
+    }
+    <div class="row mb-4">
+        <h1>Your Answers</h1>
+    </div>
+    @if (Model.Item2.Count == 0)
+    {
+        <p style="color: red">You have not answered any question!!!</p>
+    }
+    @foreach (var answer in Model.Item2)
+    {
+        @Html.Partial("answer", answer)
+    }
+</div>
